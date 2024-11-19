@@ -33,14 +33,14 @@ app.post("/login", (req, res) => {
 
 // Register additional details
 app.post("/register", (req, res) => {
-  const { email, website, username } = req.body;
+  const { email, website, contactNumber } = req.body;
 
   const userIndex = users.findIndex((u) => u.email === email);
   if (userIndex === -1) {
     return res.status(404).json({ message: "User not found" });
   }
 
-  users[userIndex] = { ...users[userIndex], website, username };
+  users[userIndex] = { ...users[userIndex], website, contactNumber };
   fs.writeFileSync(DB_PATH, JSON.stringify(users, null, 2));
   res
     .status(200)

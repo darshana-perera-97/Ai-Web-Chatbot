@@ -10,7 +10,6 @@ function Dashboard() {
     const fetchUser = async () => {
       const email = localStorage.getItem("email");
 
-      // If no email found in localStorage, redirect to login
       if (!email) {
         navigate("/");
         return;
@@ -21,13 +20,17 @@ function Dashboard() {
         setUserData(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
-        // Redirect to login if the user is not found
         navigate("/");
       }
     };
 
     fetchUser();
   }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("email");
+    navigate("/");
+  };
 
   if (!userData) {
     return <div>Loading...</div>;
@@ -38,16 +41,14 @@ function Dashboard() {
       <h1>Dashboard</h1>
       <p>Welcome, {userData.name}</p>
       <p>Email: {userData.email}</p>
-      {userData.website ? (
-        <p>Website: {userData.website}</p>
-      ) : (
-        <p>No website provided</p>
-      )}
+      <p>Website: {userData.website || "Not provided"}</p>
+      <p>Contact Number: {userData.contactNumber || "Not provided"}</p>
       <img
         src={userData.picture}
         alt="User Profile"
         style={{ borderRadius: "50%", width: "100px", height: "100px" }}
       />
+      <button onClick={handleLogout}>Logout</button>
     </div>
   );
 }
